@@ -2,3 +2,6 @@
 .gemini
 
 .DS_Store
+*.csv
+
+archive

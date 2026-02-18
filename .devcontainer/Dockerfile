@@ -76,13 +76,17 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
   -a "source /usr/share/doc/fzf/examples/key-bindings.zsh" \
   -a "source /usr/share/doc/fzf/examples/completion.zsh" \
   -a "export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+  -a "export PATH=\"$HOME/.local/bin:$PATH\""\
   -x
 
 # Install Claude
-RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
-
+# RUN npm install -g @anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}
+RUN curl -fsSL https://claude.ai/install.sh | bash
 # Install Gemini CLI
 RUN npm install -g @google/gemini-cli
+
+# Install Pi Coding Agent
+RUN npm install -g @mariozechner/pi-coding-agent
 
 # Copy and set up firewall script
 COPY init-firewall.sh /usr/local/bin/

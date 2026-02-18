@@ -1,5 +1,5 @@
 {
-  "name": "Agent Code Sandbox",
+  "name": "Agent Sandbox - ${localWorkspaceFolder}",
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
@@ -9,19 +9,22 @@
       "ZSH_IN_DOCKER_VERSION": "1.2.0"
     }
   },
-  "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
+  "runArgs": [
+    "--cap-add=NET_ADMIN",
+    "--cap-add=NET_RAW"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
         "anthropic.claude-code",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "eamodio.gitlens",
         "GoogleCloudTools.cloudcode",
         "Google.geminicodeassist",
         "google.gemini-cli-vscode-ide-companion",
         "Bhsd.vscode-extension-wikiparser",
-        "RoweWilsonFrederiskHolme.wikitext"
+        "RoweWilsonFrederiskHolme.wikitext",
+        "bierner.markdown-mermaid"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -45,17 +48,19 @@
   "remoteUser": "node",
   "mounts": [
     "source=${localWorkspaceFolder}/.claude,target=/home/node/.claude,type=bind",
-    // "source=${localWorkspaceFolder}/.claude.json,target=/home/node/.claude.json,type=bind",
-    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/node/.ssh,readonly,type=bind",
     "source=${localWorkspaceFolder}/.gemini,target=/home/node/.gemini,type=bind"
   ],
+  "features": {
+    "github-cli": "latest",
+    "azure-cli": "latest"
+  },
   "containerEnv": {
     "NODE_OPTIONS": "--max-old-space-size=4096",
     "CLAUDE_CONFIG_DIR": "/home/node/.claude",
     "POWERLEVEL9K_DISABLE_GITSTATUS": "true"
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
-  "workspaceFolder": "/workspace",
-  "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
-  "waitFor": "postStartCommand"
+  "workspaceFolder": "/workspace"
+  // "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
+  // "waitFor": "postStartCommand"
 }
