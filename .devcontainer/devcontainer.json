@@ -1,54 +1,69 @@
 {
-  "name": "Agent Sandbox - ${localWorkspaceFolder}",
+  "name": "Sandbox - ${localWorkspaceFolder}",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "build": {
     "dockerfile": "Dockerfile",
     "args": {
       "TZ": "${localEnv:TZ:America/Chicago}",
       "CLAUDE_CODE_VERSION": "latest",
       "GIT_DELTA_VERSION": "0.18.2",
-      "ZSH_IN_DOCKER_VERSION": "1.2.0"
+      "ZSH_IN_DOCKER_VERSION": "1.2.0",
+      "BUN_VERSION": "latest"
     }
   },
   "runArgs": [
     "--cap-add=NET_ADMIN",
     "--cap-add=NET_RAW"
   ],
+  // Add the IDs of extensions you want installed when the container is created.
   "customizations": {
     "vscode": {
-      "extensions": [
-        "anthropic.claude-code",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "GoogleCloudTools.cloudcode",
-        "Google.geminicodeassist",
-        "google.gemini-cli-vscode-ide-companion",
-        "Bhsd.vscode-extension-wikiparser",
-        "RoweWilsonFrederiskHolme.wikitext",
-        "bierner.markdown-mermaid"
-      ],
       "settings": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.codeActionsOnSave": {
           "source.fixAll.eslint": "explicit"
         },
-        "terminal.integrated.defaultProfile.linux": "zsh",
-        "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "bash",
-            "icon": "terminal-bash"
-          },
-          "zsh": {
-            "path": "zsh"
-          }
-        }
-      }
+        "eslint.validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ],
+        "files.autoSave": "onFocusChange"
+      },
+      "extensions": [
+        "anthropic.claude-code",
+        "dbaeumer.vscode-eslint",
+        "GoogleCloudTools.cloudcode",
+        "Google.geminicodeassist",
+        "google.gemini-cli-vscode-ide-companion",
+        "ms-toolsai.jupyter",
+        "github.copilot",
+        "github.copilot-chat",
+        "esbenp.prettier-vscode",
+        "bierner.markdown-mermaid"
+      ],
     }
   },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // "forwardPorts": [3000],
+  // "portsAttributes": {
+  //   "3000": {
+  //     "label": "Preview",
+  //     "onAutoForward": "openBrowser",
+  //     "protocol": "http"
+  //   }
+  // },
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "npm install",
+  // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "node",
   "mounts": [
-    "source=${localWorkspaceFolder}/.claude,target=/home/node/.claude,type=bind",
-    "source=${localWorkspaceFolder}/.gemini,target=/home/node/.gemini,type=bind"
+    "source=claude-code-config-asc,target=/home/node/.claude,type=volume",
+    "source=claude-code-gh-asc,target=/home/node/.config/gh,type=volume",
+    "source=gemini-cli-config-asc,target=/home/node/.gemini,type=volume"
   ],
   "features": {
     "github-cli": "latest",

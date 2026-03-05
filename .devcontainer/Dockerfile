@@ -1,11 +1,13 @@
-FROM node:20
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/javascript-node/.devcontainer/base.Dockerfile
 
-ARG TZ
-ENV TZ="$TZ"
+# [Choice] Node.js version (use -bullseye variants on local arm64/Apple Silicon): 16, 14, 12, 16-bullseye, 14-bullseye, 12-bullseye, 16-buster, 14-buster, 12-buster
+ARG VARIANT="24-bookworm"
 
-ARG CLAUDE_CODE_VERSION=latest
+FROM mcr.microsoft.com/devcontainers/javascript-node:${VARIANT}
 
-# Install basic development tools and iptables/ipset
+# [Optional] Uncomment this section to install additional OS packages.
+# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+#     && apt-get -y install --no-install-recommends <your-package-list-here>
 RUN apt-get update && apt-get install -y --no-install-recommends \
   less \
   git \
@@ -27,27 +29,28 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   vim \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
+# Install Bun
+RUN npm install -g bun@${BUN_VERSION:-latest}
+
+# [Optional] Uncomment if you want to install an additional version of node using nvm
+# ARG EXTRA_NODE_VERSION=10
+# RUN su node -c "source /usr/local/share/nvm/nvm.sh && nvm install ${EXTRA_NODE_VERSION}"
 # Ensure default node user has access to /usr/local/share
 RUN mkdir -p /usr/local/share/npm-global && \
   chown -R node:node /usr/local/share
 
 ARG USERNAME=node
-
-# Persist bash history.
-RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
-  && mkdir /commandhistory \
-  && touch /commandhistory/.bash_history \
-  && chown -R $USERNAME /commandhistory
-
-# Set `DEVCONTAINER` environment variable to help with orientation
 ENV DEVCONTAINER=true
 
 # Create workspace and config directories and set permissions
-RUN mkdir -p /workspace /home/node/.claude && \
-  chown -R node:node /workspace /home/node/.claude
+RUN mkdir -p /workspace /home/node/.claude /home/node/.config/gh /home/node/.gemini && \
+  chown -R node:node /workspace /home/node/.claude /home/node/.config/gh /home/node/.gemini 
+
+RUN mkdir -p /home/node/.config/Code /home/node/.pi && \
+  chown -R node:node /home/node/.config/Code /home/node/.pi
 
 WORKDIR /workspace
-
 ARG GIT_DELTA_VERSION=0.18.2
 RUN ARCH=$(dpkg --print-architecture) && \
   wget "https://github.com/dandavison/delta/releases/download/${GIT_DELTA_VERSION}/git-delta_${GIT_DELTA_VERSION}_${ARCH}.deb" && \
@@ -56,7 +59,6 @@ RUN ARCH=$(dpkg --print-architecture) && \
 
 # Set up non-root user
 USER node
-
 # Install global packages
 ENV NPM_CONFIG_PREFIX=/usr/local/share/npm-global
 ENV PATH=$PATH:/usr/local/share/npm-global/bin
@@ -84,14 +86,9 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 RUN curl -fsSL https://claude.ai/install.sh | bash
 # Install Gemini CLI
 RUN npm install -g @google/gemini-cli
+# Install GitHub Copilot CLI
+RUN npm install -g @github/copilot
 
-# Install Pi Coding Agent
-RUN npm install -g @mariozechner/pi-coding-agent
-
-# Copy and set up firewall script
-COPY init-firewall.sh /usr/local/bin/
-USER root
-RUN chmod +x /usr/local/bin/init-firewall.sh && \
-  echo "node ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/node-firewall && \
-  chmod 0440 /etc/sudoers.d/node-firewall
+# [Optional] Uncomment if you want to install more global node modules
+# RUN su node -c "npm install -g <your-package-list-here>"
 USER node
