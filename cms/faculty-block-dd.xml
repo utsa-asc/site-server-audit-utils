@@ -1,0 +1,13 @@
+<system-data-structure>
+    <group collapsed="true" identifier="details" label="Details">
+        <text field-id="9c52553ac0a8005b459cfb4ceb8f4dcd" identifier="title" label="Title" maximum-number="5" minimum-number="1" multiple="true" required="true"/>
+        <text field-id="0343e9df81736a1b0749e8ed72455570" identifier="primaryDepartment" label="Primary Department" required="true"/>
+        <text field-id="b4ff201981736a1b3773764c90b442f7" help-text="e.g. 210-555-5555" identifier="phone" label="Phone"/>
+        <text field-id="b4ff201981736a1b3773764cdd9744cb" identifier="email" label="Email"/>
+        <text field-id="b4ff201a81736a1b3773764c4881c5c0" help-text="e.g. BB 4.01.18" identifier="office" label="Office Location"/>
+        <text field-id="9c4dc2b6c0a8005b459cfb4cda49f016" help-text="Brief intro paragraph" identifier="wysiwyg" label="About (only on cards)" wysiwyg="true"/>
+        <shared-field field-id="41922f9281736a1b7b21368962503397" identifier="cvlink" label="CV Link" path="Link"/>
+        <shared-field field-id="a22769ecc0a8005b459cfb4c743ff87d" identifier="link" label="Profile Page Link" path="/Link"/>
+    </group>
+    <shared-field field-id="9c4dc2b6c0a8005b459cfb4c532fd83c" identifier="image" label="Headshot" path="/Image"/>
+</system-data-structure>

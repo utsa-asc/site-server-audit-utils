@@ -1,0 +1,81 @@
+#import("_cms/formats/global/utilities")
+##
+## ============================================================================
+## Faculty Profile export
+## ----------------------------------------------------------------------------
+## Adapted from sitemap-query.vm. This version ONLY indexes pages built on the
+## "Faculty Page" metadata set, and for each one outputs:
+##   - the page metadata displayName
+##   - the structured data from the Faculty Profile Block attached to the page
+##     via the page-level asset field with identifier "block"
+##
+## Field identifiers below come from:
+##   - faculty-profile-page-dd.xml (page: the "block" asset chooser)
+##   - faculty-block-dd.xml        (block: details/* + image)
+## ============================================================================
+##
+#set ( $fullSiteName = $siteSetup.metadata.title )
+#set ( $websiteURL = $currentPage.site.url )
+## Page extension
+#set ( $extension = ".html" )
+##
+<facultyProfiles site="$!{fullSiteName}">
+    #set ( $q = $_.query() )
+    #set ( $q = $q.bySiteName($currentPageSiteName).includeBlocks(false).includeFolders(false).includeFiles(false).includePages(true).includeSymlinks(false) )
+    #set ( $q = $q.indexableOnly(true).publishableOnly(true) )
+    ## Preload structured data so getStructuredDataNode() is populated on each result
+    ## without an extra DB round-trip per page.
+    #set ( $q = $q.preloadStructuredData() )
+    #set ( $q = $q.maxResults(9001).byMetadataSet("Faculty Page") )
+    #set ( $q = $q.sortBy("path").sortDirection("asc") )
+    #set ( $results = $q.execute() )
+    <!-- <size content-type="Faculty Page">${results.size()}</size> -->
+    #mapFacultyPages($results)
+</facultyProfiles>
+##
+#macro(mapFacultyPages $list)
+    #foreach($page in $list)
+        #set( $pagePath = $page.path )
+        #if (!$pagePath.contains("_cms"))
+        #set( $pageLink = $page.link )
+        #set( $displayName = $page.metadata.displayName )
+        ## Publish status: lastPublishedOn is empty/null when the asset has never
+        ## been published. (publishableOnly(true) above only means "allowed to
+        ## publish", not "has been published", so test the date here.)
+        #set( $rawPubDate = $page.lastPublishedOn )
+        #if ( $rawPubDate && !$rawPubDate.isEmpty() )
+            #set( $publishStatus = "published" )
+            ##YYYY-MM-DDThh:mm:ssTZD
+            #set ( $pageMod = $_DateTool.toDate("MM-dd-yyyy", $rawPubDate) )
+            #set ( $pageMod = $_DateTool.format("yyyy-MM-dd", $pageMod) )
+        #else
+            #set( $publishStatus = "unpublished" )
+            #set( $pageMod = "" )
+        #end
+        ## --- dereference the attached Faculty Profile Block (page field "block") ---
+        #set( $blockNode = $page.getStructuredDataNode("block") )
+        #set( $block = false )
+        #if ( $blockNode && $blockNode.asset )
+            #set( $block = $blockNode.asset )
+        #end
+        ## Flatten block data: concatenate the multiple "title" values (1-5) into
+        ## one comma-separated string, and grab primaryDepartment.
+        #set( $title = "" )
+        #set( $primaryDepartment = "" )
+        #if ( $block )
+            #foreach( $t in $block.getStructuredDataNodes("details/title") )
+                #if ( $velocityCount > 1 )#set( $title = "$title, $!{t.textValue}" )#else#set( $title = "$!{t.textValue}" )#end
+            #end
+            #set( $primaryDepartment = "$!{block.getStructuredDataNode('details/primaryDepartment').textValue}" )
+        #end
+    <facultyProfile>
+        <loc>${websiteURL}/${pagePath}${extension}</loc>
+        <displayName><![CDATA[$!{displayName}]]></displayName>
+        <status>$publishStatus</status>
+        <lastmod>$pageMod</lastmod>
+        <title><![CDATA[$!{title}]]></title>
+        <primaryDepartment><![CDATA[$!{primaryDepartment}]]></primaryDepartment>
+    </facultyProfile>
+        #end
+    #end
+#end

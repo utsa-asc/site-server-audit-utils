@@ -1,0 +1,57 @@
+<system-data-structure>
+    <asset field-id="11cf122381736a1b0749e8ed42eba624" identifier="block" label="Faculty Profile Block" required="true" type="block"/>
+    <text field-id="4186f59281736a1b7b213689f81a6e7e" identifier="uuid" label="UTSA Discovery UUID"/>
+    <text field-id="602aa51f81736a1b7b213689dc33cf8b" identifier="campusAddress" label="Campus Address"/>
+    <text field-id="602aa51f81736a1b7b2136891b1343bc" identifier="mailbox" label="Mail"/>
+    <text field-id="6035db1581736a1b7b21368951de34e4" identifier="faxNumber" label="Fax"/>
+    <group identifier="links" label="Links">
+        <shared-field field-id="6035db1581736a1b7b2136895b1b1812" identifier="linkCollegeSite" label="College Site" path="Link"/>
+        <shared-field field-id="6035db1581736a1b7b2136894e8e2c94" identifier="linkSchoolSite" label="School Site" path="Link"/>
+        <shared-field field-id="655106c281736a1b7b2136899e3b108c" identifier="link" label="Additional Link" maximum-number="10" path="Link"/>
+    </group>
+    <text field-id="655106c281736a1b7b2136894d614cb8" identifier="fullBio" label="Full Bio" wysiwyg="true"/>
+    <text field-id="659cf38881736a1b7b213689880b9110" help-text="Recent courses taught" identifier="teaching" label="Teaching" wysiwyg="true"/>
+    <text field-id="653bb5b081736a1b7b2136896eb0a743" help-text="Please put items in a bulleted list" identifier="researchInterests" label="Research Interests" wysiwyg="true"/>
+    <text field-id="653bb5b081736a1b7b213689f36d6c25" help-text="Please put items in a bulleted list" identifier="degrees" label="Degrees" wysiwyg="true"/>
+    <group identifier="recentMediaClips" label="Recent Media and Clips">
+        <shared-field field-id="659cf38881736a1b7b213689167b5d0c" identifier="link" maximum-number="50" path="Link"/>
+    </group>
+    <group identifier="awards" label="Honors and Awards">
+        <text field-id="649f4acc81736a1b7b213689448c1a8f" identifier="awardInfo" label="Information from" required="true" type="radiobutton">
+            <radio-item label="UTSA Discovery" show-fields="awards/awardsCount" value="utsaDiscovery"/>
+            <radio-item label="WYSIWYG" show-fields="awards/section" value="wysiwyg"/>
+            <radio-item label="No Award Information" value="noAwardsInfo"/>
+        </text>
+        <shared-field default="500" field-id="985cf06581736a1b04b1b96341d78429" identifier="awardsCount" path="utsaDiscoveryCount"/>
+        <shared-field field-id="649f4acc81736a1b7b213689fe8b4ad1" identifier="section" path="Accordion"/>
+    </group>
+    <group identifier="presentations" label="Presentations">
+        <text field-id="659cf38881736a1b7b2136893073eb04" identifier="presentationsInfo" label="Information from" required="true" type="radiobutton">
+            <radio-item label="UTSA Discovery" show-fields="presentations/presentationsCount" value="utsaDiscovery"/>
+            <radio-item label="WYSIWYG" show-fields="presentations/section" value="wysiwyg"/>
+            <radio-item label="No Presentation Info" value="noPresentationInfo"/>
+        </text>
+        <shared-field default="500" field-id="9869ac8881736a1b04b1b963fcdc04a7" identifier="presentationsCount" path="utsaDiscoveryCount"/>
+        <shared-field field-id="659cf38881736a1b7b213689b4872a91" identifier="section" path="Accordion"/>
+    </group>
+    <group identifier="grants" label="Grants, Patents and Clinical Trials">
+        <text field-id="659cf38881736a1b7b213689a37c98c4" identifier="grantsInfo" label="Information from" required="true" type="radiobutton">
+            <radio-item label="UTSA Discovery" show-fields="grants/grantsCount, grants/patentsCount, grants/clinicalTrialsCount" value="utsaDiscovery"/>
+            <radio-item label="WYSIWYG" show-fields="grants/section" value="wysiwyg"/>
+            <radio-item label="No Grants Info" value="noGrants"/>
+        </text>
+        <shared-field default="500" field-id="9869ac8881736a1b04b1b963737a5588" identifier="grantsCount" label="How many to  Grants to display?" path="utsaDiscoveryCount"/>
+        <shared-field default="500" field-id="9869ac8881736a1b04b1b96365740f4b" identifier="patentsCount" label="How many to Patents to display?" path="utsaDiscoveryCount"/>
+        <shared-field default="500" field-id="9869ac8881736a1b04b1b9639ff8459e" identifier="clinicalTrialsCount" label="How many to Clinical Trials to display?" path="utsaDiscoveryCount"/>
+        <shared-field field-id="659cf38881736a1b7b213689a292fd8a" identifier="section" path="Accordion"/>
+    </group>
+    <group identifier="publications" label="Publications">
+        <text field-id="60534e9581736a1b7b2136893f052129" identifier="publicationInfo" label="Information from" required="true" type="radiobutton">
+            <radio-item label="UTSA Discovery" show-fields="publications/publicationsCount" value="utsaDiscovery"/>
+            <radio-item label="WYSIWYG" show-fields="publications/section" value="wysiwyg"/>
+            <radio-item label="No Publication Information" value="noPublicationInfo"/>
+        </text>
+        <shared-field field-id="987029a281736a1b04b1b9638caa8c2d" identifier="publicationsCount" path="utsaDiscoveryCount"/>
+        <shared-field field-id="646e926f81736a1b7b2136897102c842" identifier="section" path="Accordion"/>
+    </group>
+</system-data-structure>

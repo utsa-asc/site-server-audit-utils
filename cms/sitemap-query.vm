@@ -1,0 +1,50 @@
+#import("_cms/formats/global/utilities")
+##
+## MeatadataSets:
+#set ( $mdsets = ['Page', 'Faculty Page', 'Blog Category', 'Blog'] )
+##
+#set ( $callingPage = $currentPage.metadata )
+#set ( $title = $callingPage.title)
+#set ( $displayName = $callingPage.displayName)
+#set ( $name = $currentPage.name)
+#set ( $fullSiteName = $siteSetup.metadata.title )
+#set ( $websiteURL = $currentPage.site.url )
+## Page extension
+#set ( $extension = ".html" )
+##
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    #foreach($mds in $mdsets)
+        #set ( $q = $_.query() )
+        #set ( $q = $q.bySiteName($currentPageSiteName).includeBlocks(false).includeFolders(false).includeFiles(false).includePages(true).includeSymlinks(false) )
+        #set ( $q = $q.indexableOnly(true).publishableOnly(true) )
+        ## it's over 9000!
+        ###set ( $q = $q.maxResults(9001).byFolderPath("/") )
+        #set ( $q = $q.maxResults(9001).byMetadataSet($mds) )
+        #set ( $q = $q.sortBy("path").sortDirection("asc") )
+        #set ( $results = $q.execute() )
+        <!-- <size content-type="${mds}">${results.size()}</size> -->
+        #mapPages($results)
+    #end
+</urlset>
+##
+#macro(mapPages $list)
+    #foreach($page in $list)
+        #set( $pagePath = $page.path )
+        #set( $pageName = $page.name )
+        #set( $pageTitle = $page.label )
+        #set( $pageLink = $page.link )
+        #set( $pageMod = $page.lastPublishedOn )
+        ##YYYY-MM-DDThh:mm:ssTZD
+        #set ($pageMod = $_DateTool.toDate("MM-dd-yyyy", $page.lastPublishedOn))
+        #set ($pageMod = $_DateTool.format("YYYY-MM-dd", $pageMod))
+        ##$_PropertyTool.outputProperties($page)
+        ##${pageMod}
+        #if (!$pagePath.contains("_cms"))
+    <url>
+        <loc>${websiteURL}/${pagePath}${extension}</loc>
+        <priority>1</priority>
+        <lastmod>$pageMod</lastmod>
+    </url>
+        #end
+    #end
+#end
