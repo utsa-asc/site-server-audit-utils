@@ -1,0 +1,440 @@
+<title>faculty-profile-query.vm — build log</title>
+<style>
+  :root{
+    --paper:   #F2F4EF;
+    --paper-2: #E9ECE4;
+    --ink:     #1C231F;
+    --ink-soft:#4B564E;
+    --line:    #D6DCD0;
+    --accent:  #2F6B57;
+    --accent-soft: #DCE7E0;
+    --amber:   #B8763B;
+    --code-bg: #1C231F;
+    --code-fg: #DCE7DE;
+    --code-key:#8FBFA8;
+    --code-str:#D9A05B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height:1.6;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    padding:64px 24px 96px;
+  }
+  .eyebrow{
+    font-family: ui-serif, "Iowan Old Style", Charter, Georgia, serif;
+    font-style:italic;
+    font-size:14px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family: ui-serif, "Iowan Old Style", Charter, Georgia, serif;
+    font-weight:600;
+    font-size:clamp(28px,4vw,38px);
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    margin:0 0 14px;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  .dek{
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:62ch;
+    margin:0 0 28px;
+  }
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px 28px;
+    padding:18px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    margin-bottom:48px;
+  }
+  .meta-item{display:flex;flex-direction:column;gap:3px;}
+  .meta-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    color:var(--ink-soft);
+  }
+  .meta-value{
+    font-size:14px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color:var(--ink);
+  }
+
+  section{margin-bottom:56px;}
+  h2{
+    font-family: ui-serif, "Iowan Old Style", Charter, Georgia, serif;
+    font-size:22px;
+    font-weight:600;
+    margin:0 0 20px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  h2 .num{
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size:13px;
+    color:var(--accent);
+    font-weight:600;
+  }
+  p{margin:0 0 14px;max-width:65ch;}
+  p:last-child{margin-bottom:0;}
+
+  /* revision timeline */
+  .timeline{
+    position:relative;
+    padding-left:28px;
+    border-left:2px solid var(--line);
+  }
+  .turn{
+    position:relative;
+    padding-bottom:36px;
+  }
+  .turn:last-child{padding-bottom:0;}
+  .turn::before{
+    content:"";
+    position:absolute;
+    left:-33px;
+    top:4px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--paper);
+  }
+  .turn-ask{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    color:var(--ink-soft);
+    margin:0 0 6px;
+  }
+  .turn h3{
+    font-size:16.5px;
+    font-weight:650;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .turn p{font-size:14.5px;color:var(--ink-soft);}
+  .turn p strong{color:var(--ink);font-weight:600;}
+
+  .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .pill{
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size:12px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    padding:3px 9px;
+    border-radius:3px;
+    border:1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  .pill.amber{
+    background:#F2E5D5;
+    color:var(--amber);
+    border-color:color-mix(in srgb, var(--amber) 30%, transparent);
+  }
+
+  /* code blocks */
+  pre{
+    background:var(--code-bg);
+    color:var(--code-fg);
+    border-radius:6px;
+    padding:18px 20px;
+    overflow-x:auto;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size:12.6px;
+    line-height:1.65;
+    margin:0;
+  }
+  code{font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;}
+  p code, li code, td code{
+    background:var(--paper-2);
+    color:var(--ink);
+    padding:1px 6px;
+    border-radius:3px;
+    font-size:0.88em;
+    border:1px solid var(--line);
+  }
+  .code-cap{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    margin:0 0 8px;
+  }
+  .tok-tag{color:var(--code-key);}
+  .tok-com{color:#7C8A80;font-style:italic;}
+  .tok-str{color:#E0B583;}
+  .tok-dir{color:#D9A05B;}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  th,td{
+    text-align:left;
+    padding:10px 14px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  th{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  td.field{font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;font-size:13px;color:var(--accent);white-space:nowrap;}
+  .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;}
+  .table-wrap table{margin:0;}
+  .table-wrap th:first-child, .table-wrap td:first-child{padding-left:16px;}
+
+  .open-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  .open-list li{
+    padding:14px 16px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-size:14px;
+  }
+  .open-list .tag{
+    display:inline-block;
+    font-size:10.5px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--amber);
+    border:1px solid color-mix(in srgb, var(--amber) 35%, transparent);
+    border-radius:3px;
+    padding:1px 7px;
+    margin-bottom:6px;
+  }
+
+  footer{
+    margin-top:64px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-size:12.5px;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (prefers-reduced-motion: no-preference){
+    .turn{animation:rise 0.5s ease backwards;}
+    .turn:nth-child(1){animation-delay:0.02s;}
+    .turn:nth-child(2){animation-delay:0.06s;}
+    .turn:nth-child(3){animation-delay:0.10s;}
+    .turn:nth-child(4){animation-delay:0.14s;}
+    @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  }
+</style>
+
+<div class="page">
+
+  <p class="eyebrow">Cascade CMS · Velocity build log</p>
+  <h1>Building faculty-profile-query.vm</h1>
+  <p class="dek">A walkthrough of how the Faculty Page sitemap export was split off, scoped to one metadata set, wired to the attached Faculty Profile Block, and flattened into a single-level XML feed.</p>
+
+  <div class="meta">
+    <div class="meta-item">
+      <span class="meta-label">Repo</span>
+      <span class="meta-value">site-server-audit-utils/cms</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Source template</span>
+      <span class="meta-value">sitemap-query.vm</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">New template</span>
+      <span class="meta-value">faculty-profile-query.vm</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Date</span>
+      <span class="meta-value">2026-06-30</span>
+    </div>
+  </div>
+
+  <section>
+    <h2><span class="num">01</span> The ask</h2>
+    <p>The existing <code>sitemap-query.vm</code> walks four metadata sets (<code>Page</code>, <code>Faculty Page</code>, <code>Blog Category</code>, <code>Blog</code>) and emits a flat sitemap <code>&lt;url&gt;</code> entry for each. The new requirement: produce a feed scoped to <strong>only</strong> the Faculty Page set, and enrich each entry with data Cascade doesn't put in a sitemap — the page's <code>displayName</code>, plus fields pulled from the Faculty Profile Block attached to each page.</p>
+    <p>Before writing anything, we needed the block's Data Definition and the page's Data Definition, since the original template never touches structured data — only path/link/lastPublishedOn off the query result.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span> Inputs gathered</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Source</th><th>What it told us</th></tr></thead>
+        <tbody>
+          <tr><td class="field">faculty-profile-page-dd.xml</td><td>The page DD attaches the block through an <strong>asset chooser</strong> field, identifier <code>block</code>, type <code>block</code>, required.</td></tr>
+          <tr><td class="field">faculty-block-dd.xml</td><td>Block fields live under a <code>details</code> group: <code>title</code> (multiple, 1–5), <code>primaryDepartment</code>, plus phone / email / office / wysiwyg / cvlink / link, and a top-level <code>image</code> shared field — only <code>title</code> and <code>primaryDepartment</code> ended up in scope.</td></tr>
+          <tr><td class="field">Cascade Velocity API</td><td>Confirmed via Hannon Hill docs: query builder takes <code>.preloadStructuredData()</code> and <code>.byMetadataSet()</code>; results expose <code>.metadata.displayName</code> and <code>.getStructuredDataNode(path)</code>; an asset-chooser node is dereferenced with <code>.asset</code>, then re-queried the same way.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span> How it evolved</h2>
+    <div class="timeline">
+
+      <div class="turn">
+        <p class="turn-ask">Revision 1</p>
+        <h3>Scope to Faculty Page, attach displayName + block data</h3>
+        <p>Replaced the 4-set <code>#foreach</code> with a single query filtered by <code>byMetadataSet("Faculty Page")</code>, added <code>.preloadStructuredData()</code> so each result's structured data is fetched in the same pass instead of a round-trip per page, and dereferenced the page's <code>block</code> field to read the attached Faculty Profile Block.</p>
+        <div class="pillrow">
+          <span class="pill">preloadStructuredData()</span>
+          <span class="pill">byMetadataSet("Faculty Page")</span>
+          <span class="pill">getStructuredDataNode("block").asset</span>
+        </div>
+      </div>
+
+      <div class="turn">
+        <p class="turn-ask">Revision 2</p>
+        <h3>Trim fields, add publish status</h3>
+        <p>Dropped everything from the block except <code>title</code> and <code>primaryDepartment</code>. Added a <strong>published / unpublished</strong> flag — there's no direct boolean for this on a query result, so it's inferred from whether <code>lastPublishedOn</code> is set. Note this is distinct from the query's <code>publishableOnly(true)</code> filter, which only means the asset is <em>allowed</em> to publish, not that it has been.</p>
+        <div class="pillrow">
+          <span class="pill amber">lastPublishedOn → published/unpublished</span>
+        </div>
+      </div>
+
+      <div class="turn">
+        <p class="turn-ask">Revision 3</p>
+        <h3>Flatten the output</h3>
+        <p>The block fields had been nested under a <code>&lt;facultyProfileBlock&gt;</code> wrapper. Final pass pulls <code>title</code> and <code>primaryDepartment</code> up to the same level as <code>displayName</code> and <code>status</code>, and the repeating <code>title</code> field (1–5 values) is concatenated into a single comma-separated string instead of a nested list.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span> Final output shape</h2>
+    <p class="code-cap">One &lt;facultyProfile&gt; entry — fully flat</p>
+    <pre><span class="tok-tag">&lt;facultyProfile&gt;</span>
+    <span class="tok-tag">&lt;loc&gt;</span>https://example.utsa.edu/path/to/page.html<span class="tok-tag">&lt;/loc&gt;</span>
+    <span class="tok-tag">&lt;displayName&gt;</span><span class="tok-str">&lt;![CDATA[Jane Doe]]&gt;</span><span class="tok-tag">&lt;/displayName&gt;</span>
+    <span class="tok-tag">&lt;status&gt;</span>published<span class="tok-tag">&lt;/status&gt;</span>
+    <span class="tok-tag">&lt;lastmod&gt;</span>2026-06-13<span class="tok-tag">&lt;/lastmod&gt;</span>
+    <span class="tok-tag">&lt;title&gt;</span><span class="tok-str">&lt;![CDATA[Associate Professor, Graduate Advisor]]&gt;</span><span class="tok-tag">&lt;/title&gt;</span>
+    <span class="tok-tag">&lt;primaryDepartment&gt;</span><span class="tok-str">&lt;![CDATA[Department of Example]]&gt;</span><span class="tok-tag">&lt;/primaryDepartment&gt;</span>
+<span class="tok-tag">&lt;/facultyProfile&gt;</span></pre>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span> Full template</h2>
+    <p class="code-cap">faculty-profile-query.vm</p>
+    <pre><span class="tok-dir">#import</span>(<span class="tok-str">"_cms/formats/global/utilities"</span>)
+<span class="tok-com">## ============================================================================
+## Faculty Profile export — adapted from sitemap-query.vm.
+## Indexes ONLY pages on the "Faculty Page" metadata set. Per page, outputs:
+##   - the page metadata displayName
+##   - published/unpublished status (inferred from lastPublishedOn)
+##   - title + primaryDepartment from the attached Faculty Profile Block
+##     (page field "block" -> dereferenced via .asset)
+## ============================================================================</span>
+<span class="tok-dir">#set</span> ( $fullSiteName = $siteSetup.metadata.title )
+<span class="tok-dir">#set</span> ( $websiteURL = $currentPage.site.url )
+<span class="tok-dir">#set</span> ( $extension = <span class="tok-str">".html"</span> )
+
+<span class="tok-tag">&lt;facultyProfiles</span> site=<span class="tok-str">"$!{fullSiteName}"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-dir">#set</span> ( $q = $_.query() )
+    <span class="tok-dir">#set</span> ( $q = $q.bySiteName($currentPageSiteName).includeBlocks(false).includeFolders(false).includeFiles(false).includePages(true).includeSymlinks(false) )
+    <span class="tok-dir">#set</span> ( $q = $q.indexableOnly(true).publishableOnly(true) )
+    <span class="tok-com">## Preload structured data so getStructuredDataNode() is populated per result
+    ## without an extra DB round-trip per page.</span>
+    <span class="tok-dir">#set</span> ( $q = $q.preloadStructuredData() )
+    <span class="tok-dir">#set</span> ( $q = $q.maxResults(9001).byMetadataSet(<span class="tok-str">"Faculty Page"</span>) )
+    <span class="tok-dir">#set</span> ( $q = $q.sortBy(<span class="tok-str">"path"</span>).sortDirection(<span class="tok-str">"asc"</span>) )
+    <span class="tok-dir">#set</span> ( $results = $q.execute() )
+    <span class="tok-dir">#mapFacultyPages</span>($results)
+<span class="tok-tag">&lt;/facultyProfiles&gt;</span>
+
+<span class="tok-dir">#macro</span>(mapFacultyPages $list)
+    <span class="tok-dir">#foreach</span>($page in $list)
+        <span class="tok-dir">#set</span>( $pagePath = $page.path )
+        <span class="tok-dir">#if</span> (!$pagePath.contains(<span class="tok-str">"_cms"</span>))
+        <span class="tok-dir">#set</span>( $displayName = $page.metadata.displayName )
+        <span class="tok-com">## published/unpublished: lastPublishedOn is empty when never published.
+        ## publishableOnly(true) above only means "allowed to publish".</span>
+        <span class="tok-dir">#set</span>( $rawPubDate = $page.lastPublishedOn )
+        <span class="tok-dir">#if</span> ( $rawPubDate &amp;&amp; !$rawPubDate.isEmpty() )
+            <span class="tok-dir">#set</span>( $publishStatus = <span class="tok-str">"published"</span> )
+            <span class="tok-dir">#set</span> ( $pageMod = $_DateTool.toDate(<span class="tok-str">"MM-dd-yyyy"</span>, $rawPubDate) )
+            <span class="tok-dir">#set</span> ( $pageMod = $_DateTool.format(<span class="tok-str">"yyyy-MM-dd"</span>, $pageMod) )
+        <span class="tok-dir">#else</span>
+            <span class="tok-dir">#set</span>( $publishStatus = <span class="tok-str">"unpublished"</span> )
+            <span class="tok-dir">#set</span>( $pageMod = <span class="tok-str">""</span> )
+        <span class="tok-dir">#end</span>
+        <span class="tok-com">## dereference the attached Faculty Profile Block (page field "block")</span>
+        <span class="tok-dir">#set</span>( $blockNode = $page.getStructuredDataNode(<span class="tok-str">"block"</span>) )
+        <span class="tok-dir">#set</span>( $block = false )
+        <span class="tok-dir">#if</span> ( $blockNode &amp;&amp; $blockNode.asset )
+            <span class="tok-dir">#set</span>( $block = $blockNode.asset )
+        <span class="tok-dir">#end</span>
+        <span class="tok-com">## concatenate the repeating "title" field (1-5) into one string</span>
+        <span class="tok-dir">#set</span>( $title = <span class="tok-str">""</span> )
+        <span class="tok-dir">#set</span>( $primaryDepartment = <span class="tok-str">""</span> )
+        <span class="tok-dir">#if</span> ( $block )
+            <span class="tok-dir">#foreach</span>( $t in $block.getStructuredDataNodes(<span class="tok-str">"details/title"</span>) )
+                <span class="tok-dir">#if</span> ( $velocityCount &gt; 1 )<span class="tok-dir">#set</span>( $title = <span class="tok-str">"$title, $!{t.textValue}"</span> )<span class="tok-dir">#else</span><span class="tok-dir">#set</span>( $title = <span class="tok-str">"$!{t.textValue}"</span> )<span class="tok-dir">#end</span>
+            <span class="tok-dir">#end</span>
+            <span class="tok-dir">#set</span>( $primaryDepartment = <span class="tok-str">"$!{block.getStructuredDataNode('details/primaryDepartment').textValue}"</span> )
+        <span class="tok-dir">#end</span>
+    <span class="tok-tag">&lt;facultyProfile&gt;</span>
+        <span class="tok-tag">&lt;loc&gt;</span>${websiteURL}/${pagePath}${extension}<span class="tok-tag">&lt;/loc&gt;</span>
+        <span class="tok-tag">&lt;displayName&gt;</span><span class="tok-str">&lt;![CDATA[$!{displayName}]]&gt;</span><span class="tok-tag">&lt;/displayName&gt;</span>
+        <span class="tok-tag">&lt;status&gt;</span>$publishStatus<span class="tok-tag">&lt;/status&gt;</span>
+        <span class="tok-tag">&lt;lastmod&gt;</span>$pageMod<span class="tok-tag">&lt;/lastmod&gt;</span>
+        <span class="tok-tag">&lt;title&gt;</span><span class="tok-str">&lt;![CDATA[$!{title}]]&gt;</span><span class="tok-tag">&lt;/title&gt;</span>
+        <span class="tok-tag">&lt;primaryDepartment&gt;</span><span class="tok-str">&lt;![CDATA[$!{primaryDepartment}]]&gt;</span><span class="tok-tag">&lt;/primaryDepartment&gt;</span>
+    <span class="tok-tag">&lt;/facultyProfile&gt;</span>
+        <span class="tok-dir">#end</span>
+    <span class="tok-dir">#end</span>
+<span class="tok-dir">#end</span></pre>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span> Open items before shipping</h2>
+    <ul class="open-list">
+      <li>
+        <span class="tag">Verify on a live page</span>
+        <code>$page.lastPublishedOn</code> is treated as a string and tested with <code>.isEmpty()</code>. If this Cascade instance returns a Date object instead, that call will throw — swap to <code>$_PropertyTool.isNull($rawPubDate)</code> if so.
+      </li>
+      <li>
+        <span class="tag">Verify on a live page</span>
+        <code>.preloadStructuredData()</code> is called with no arguments per the public docs. Some Cascade versions take a boolean — confirm against this instance before relying on it at scale.
+      </li>
+      <li>
+        <span class="tag">Engine detail</span>
+        The title-join logic uses <code>$velocityCount</code> (Velocity's built-in 1-based loop counter) to decide where to insert <code>", "</code>. If this Cascade instance's Velocity config exposes <code>$foreach.count</code> instead, swap it in.
+      </li>
+      <li>
+        <span class="tag">Product decision</span>
+        Pages with no Faculty Profile Block attached still produce an entry, with <code>title</code> and <code>primaryDepartment</code> left empty, rather than being skipped. Confirm that's the desired behavior versus omitting them outright.
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>site-server-audit-utils/cms</span>
+    <span>Full transcript: cms-convo.md</span>
+  </footer>
+
+</div>
